@@ -27,4 +27,20 @@
 #ifndef CELT_LPC_WASM_H
 #define CELT_LPC_WASM_H
 
+#if defined(FIXED_POINT)
+
+void celt_fir_wasm(
+         const opus_val16 *x,
+         const opus_val16 *num,
+         opus_val16 *y,
+         int N,
+         int ord,
+         int arch);
+
+#define OVERRIDE_CELT_FIR
+#define celt_fir(x, num, y, N, ord, arch) \
+    ((void)(arch), celt_fir_wasm(x, num, y, N, ord, arch))
+
+#endif /* FIXED_POINT */
+
 #endif /* CELT_LPC_WASM_H */

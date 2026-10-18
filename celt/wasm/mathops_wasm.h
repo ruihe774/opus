@@ -27,4 +27,21 @@
 #ifndef MATHOPS_WASM_H
 #define MATHOPS_WASM_H
 
+#if !defined(DISABLE_FLOAT_API)
+
+void celt_float2int16_wasm(const float * OPUS_RESTRICT in,
+      short * OPUS_RESTRICT out, int cnt);
+
+#define OVERRIDE_FLOAT2INT16
+#define celt_float2int16(in, out, cnt, arch) \
+    ((void)(arch), celt_float2int16_wasm(in, out, cnt))
+
+int opus_limit2_checkwithin1_wasm(float *samples, int cnt);
+
+#define OVERRIDE_LIMIT2_CHECKWITHIN1
+#define opus_limit2_checkwithin1(samples, cnt, arch) \
+    ((void)(arch), opus_limit2_checkwithin1_wasm(samples, cnt))
+
+#endif /* !DISABLE_FLOAT_API */
+
 #endif /* MATHOPS_WASM_H */
