@@ -41,6 +41,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "fixed/arm/warped_autocorrelation_FIX_arm.h"
 #endif
 
+#if defined(OPUS_WASM_SIMD128)
+#include "fixed/wasm/main_FIX_wasm.h"
+#endif
+
 
 #define silk_encoder_state_Fxx      silk_encoder_state_FIX
 #define silk_encode_do_VAD_Fxx      silk_encode_do_VAD_FIX

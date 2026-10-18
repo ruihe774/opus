@@ -55,6 +55,15 @@ foreach intr_name : ['sse4_1', 'avx2', 'neon_intr']
       install: false)
 endforeach
 
+if have_wasm_simd128
+  silk_sources += sources['SILK_SOURCES_WASM_SIMD']
+  if opt_fixed_point
+    silk_sources += sources['SILK_SOURCES_FIXED_WASM_SIMD']
+  else
+    silk_sources += sources['SILK_SOURCES_FLOAT_WASM_SIMD']
+  endif
+endif
+
 silk_c_args = []
 if host_machine.system() == 'windows'
   silk_c_args += ['-DDLL_EXPORT']

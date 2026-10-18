@@ -43,6 +43,10 @@ celt/arm/mathops_arm.h \
 celt/arm/pitch_arm.h \
 celt/arm/fft_arm.h \
 celt/arm/mdct_arm.h \
+celt/wasm/celt_lpc_wasm.h \
+celt/wasm/mathops_wasm.h \
+celt/wasm/pitch_wasm.h \
+celt/wasm/vq_wasm.h \
 celt/mips/celt_mipsr1.h \
 celt/mips/fixed_generic_mipsr1.h \
 celt/mips/kiss_fft_mipsr1.h \

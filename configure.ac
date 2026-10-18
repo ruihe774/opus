@@ -254,6 +254,7 @@ AC_ARG_ENABLE([intrinsics],
 rtcd_support=no
 cpu_arm=no
 cpu_x86=no
+cpu_wasm=no
 
 AS_IF([test x"${enable_asm}" = x"yes"],[
     inline_optimization="No inline ASM for your platform, please send patches"
@@ -770,6 +771,48 @@ AS_IF([test x"$enable_intrinsics" = x"yes"],[
                  AC_DEFINE([CPU_INFO_BY_C], [1], [Get CPU Info by c method])],
             [AC_MSG_ERROR([no supported Get CPU Info method, please disable run-time CPU capabilities detection or intrinsics])])])])
    ],
+   [wasm32|wasm64],
+   [
+      dnl WebAssembly has no run-time CPU detection: the SIMD kernels are used
+      dnl when the compiler targets fixed-width SIMD (e.g. CFLAGS=-msimd128),
+      dnl and their relaxed-SIMD variants when it also targets relaxed SIMD
+      dnl (e.g. CFLAGS=-mrelaxed-simd).
+      cpu_wasm=yes
+      AC_MSG_CHECKING([if compiler targets WebAssembly SIMD128])
+      AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+         #include <wasm_simd128.h>
+         #ifndef __wasm_simd128__
+         #error SIMD128 is not enabled
+         #endif
+      ]],[[
+         v128_t x = wasm_i32x4_splat(1);
+         return wasm_i32x4_extract_lane(wasm_i32x4_add(x, x), 0);
+      ]])],[
+         OPUS_WASM_SIMD128=1
+         AC_MSG_RESULT([yes])
+         AC_DEFINE([OPUS_WASM_SIMD128], [1], [Use WebAssembly SIMD128 intrinsics])
+         AC_MSG_CHECKING([if compiler targets WebAssembly relaxed SIMD])
+         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+            #include <wasm_simd128.h>
+            #ifndef __wasm_relaxed_simd__
+            #error relaxed SIMD is not enabled
+            #endif
+         ]],[[
+            v128_t x = wasm_f32x4_splat(1.f);
+            return (int)wasm_f32x4_extract_lane(wasm_f32x4_relaxed_madd(x, x, x), 0);
+         ]])],[
+            AC_MSG_RESULT([yes])
+            intrinsics_support="WebAssembly SIMD128 (relaxed)"
+         ],[
+            AC_MSG_RESULT([no])
+            intrinsics_support="WebAssembly SIMD128"
+         ])
+      ],[
+         AC_MSG_RESULT([no])
+         AC_MSG_WARN([Pass -msimd128 or -mrelaxed-simd in CFLAGS to use WebAssembly SIMD])
+         intrinsics_support="no"
+      ])
+   ],
    [
       AC_MSG_WARN([No intrinsics support for your architecture])
       intrinsics_support="no"
@@ -785,6 +828,8 @@ AM_CONDITIONAL([HAVE_ARM_DOTPROD],
 AM_CONDITIONAL([HAVE_ARM_NEON_INTR],
     [test x"$OPUS_ARM_MAY_HAVE_NEON_INTR" = x"1"])
 AM_CONDITIONAL([CPU_X86], [test "$cpu_x86" = "yes"])
+AM_CONDITIONAL([HAVE_WASM_SIMD128],
+    [test x"$OPUS_WASM_SIMD128" = x"1"])
 AM_CONDITIONAL([HAVE_SSE],
     [test x"$OPUS_X86_MAY_HAVE_SSE" = x"1"])
 AM_CONDITIONAL([HAVE_SSE2],

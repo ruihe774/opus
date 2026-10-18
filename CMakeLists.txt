@@ -607,6 +607,17 @@ if(NOT OPUS_DISABLE_INTRINSICS)
                                  OPUS_ARM_PRESUME_NEON_INTR)
     endif()
   endif()
+
+  if(COMPILER_SUPPORT_WASM_SIMD128)
+    target_compile_definitions(opus PRIVATE OPUS_WASM_SIMD128)
+    add_sources_group(opus celt ${celt_sources_wasm_simd})
+    add_sources_group(opus silk ${silk_sources_wasm_simd})
+    if(OPUS_FIXED_POINT)
+      add_sources_group(opus silk ${silk_sources_fixed_wasm_simd})
+    else()
+      add_sources_group(opus silk ${silk_sources_float_wasm_simd})
+    endif()
+  endif()
 endif()
 
 target_compile_definitions(opus

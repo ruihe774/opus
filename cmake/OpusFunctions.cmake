@@ -143,6 +143,25 @@ function(opus_detect_neon COMPILER_SUPPORT_NEON)
   endif()
 endfunction()
 
+function(opus_detect_wasm_simd COMPILER_SUPPORT_WASM_SIMD128)
+  # WebAssembly has no run-time CPU detection: the SIMD kernels are used when
+  # the compiler targets fixed-width SIMD (e.g. CMAKE_C_FLAGS=-msimd128), and
+  # their relaxed-SIMD variants when it also targets relaxed SIMD
+  # (e.g. CMAKE_C_FLAGS=-mrelaxed-simd).
+  include(CheckCSourceCompiles)
+  message(STATUS "Check WebAssembly SIMD128 support by compiler")
+  check_c_source_compiles("
+    #include <wasm_simd128.h>
+    #ifndef __wasm_simd128__
+    #error SIMD128 is not enabled
+    #endif
+    int main(void) {
+      v128_t x = wasm_i32x4_splat(1);
+      return wasm_i32x4_extract_lane(wasm_i32x4_add(x, x), 0);
+    }" HAVE_WASM_SIMD128)
+  set(COMPILER_SUPPORT_WASM_SIMD128 ${HAVE_WASM_SIMD128} PARENT_SCOPE)
+endfunction()
+
 function(opus_supports_cpu_detection RUNTIME_CPU_CAPABILITY_DETECTION)
   set(RUNTIME_CPU_CAPABILITY_DETECTION 0 PARENT_SCOPE)
   if(OPUS_CPU_X86 OR OPUS_CPU_X64)

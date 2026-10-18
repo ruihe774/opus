@@ -54,3 +54,9 @@ celt/arm/celt_neon_aarch64.S \
 celt/arm/celt_mdct_tx.c \
 celt/arm/celt_tx_neon.S \
 celt/arm/pitch_neon_intr.c
+
+CELT_SOURCES_WASM_SIMD = \
+celt/wasm/celt_lpc_wasm.c \
+celt/wasm/mathops_wasm.c \
+celt/wasm/pitch_wasm.c \
+celt/wasm/vq_wasm.c

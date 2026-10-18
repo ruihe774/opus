@@ -46,6 +46,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "arm/NSQ_del_dec_arm.h"
 #endif
 
+#if defined(OPUS_WASM_SIMD128)
+#include "wasm/main_wasm.h"
+#endif
+
 /* Convert Left/Right stereo signal to adaptive Mid/Side representation */
 void silk_stereo_LR_to_MS(
     stereo_enc_state            *state,                         /* I/O  State                                       */

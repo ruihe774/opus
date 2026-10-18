@@ -47,6 +47,10 @@ if host_cpu_family in ['arm', 'aarch64'] and have_arm_intrinsics_or_asm
   endif
 endif
 
+if have_wasm_simd128
+  celt_sources += sources['CELT_SOURCES_WASM_SIMD']
+endif
+
 celt_c_args = []
 if host_system == 'windows'
   celt_c_args += ['-DDLL_EXPORT']
