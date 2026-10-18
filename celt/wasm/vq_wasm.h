@@ -27,4 +27,16 @@
 #ifndef VQ_WASM_H
 #define VQ_WASM_H
 
+#if !defined(FIXED_POINT)
+
+/* Like op_pvq_search_sse2(), this needs iy[] to have room for N+3
+   entries (see alg_quant()). */
+opus_val16 op_pvq_search_wasm(celt_norm *_X, int *iy, int K, int N, int arch);
+
+#define OVERRIDE_OP_PVQ_SEARCH
+#define op_pvq_search(x, iy, K, N, arch) \
+    (op_pvq_search_wasm(x, iy, K, N, arch))
+
+#endif /* !FIXED_POINT */
+
 #endif /* VQ_WASM_H */
