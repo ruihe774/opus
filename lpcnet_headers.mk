@@ -11,6 +11,7 @@ dnn/plc_data.h \
 dnn/vec.h \
 dnn/vec_avx.h \
 dnn/vec_neon.h \
+dnn/vec_wasm.h \
 dnn/pitchdnn.h \
 dnn/pitchdnn_data.h \
 dnn/x86/dnn_x86.h \

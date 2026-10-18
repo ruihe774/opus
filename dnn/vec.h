@@ -39,6 +39,8 @@
 #include "vec_avx.h"
 #elif (defined(__ARM_NEON__) || defined(__ARM_NEON)) && !defined(DISABLE_NEON)
 #include "vec_neon.h"
+#elif defined(OPUS_WASM_SIMD128)
+#include "vec_wasm.h"
 #else
 
 #include "os_support.h"
