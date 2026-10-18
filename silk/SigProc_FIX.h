@@ -48,6 +48,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "arm/LPC_inv_pred_gain_arm.h"
 #endif
 
+#if defined(OPUS_WASM_SIMD128)
+#include "wasm/SigProc_FIX_wasm.h"
+#endif
+
 /********************************************************************/
 /*                    SIGNAL PROCESSING FUNCTIONS                   */
 /********************************************************************/

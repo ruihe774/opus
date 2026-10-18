@@ -44,6 +44,10 @@
 #include "arm/mathops_arm.h"
 #endif
 
+#if defined(OPUS_WASM_SIMD128)
+#include "wasm/mathops_wasm.h"
+#endif
+
 #define PI 3.1415926535897931
 
 /* Multiplies two 16-bit fractional values. Bit-exactness of this macro is important */

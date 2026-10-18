@@ -20,6 +20,12 @@ get_opus_sources(SILK_SOURCES_ARM_NEON_INTR silk_sources.mk
                  silk_sources_arm_neon_intr)
 get_opus_sources(SILK_SOURCES_FIXED_ARM_NEON_INTR silk_sources.mk
                  silk_sources_fixed_arm_neon_intr)
+get_opus_sources(SILK_SOURCES_WASM_SIMD silk_sources.mk
+                 silk_sources_wasm_simd)
+get_opus_sources(SILK_SOURCES_FIXED_WASM_SIMD silk_sources.mk
+                 silk_sources_fixed_wasm_simd)
+get_opus_sources(SILK_SOURCES_FLOAT_WASM_SIMD silk_sources.mk
+                 silk_sources_float_wasm_simd)
 
 get_opus_sources(OPUS_HEAD opus_headers.mk opus_headers)
 get_opus_sources(OPUS_SOURCES opus_sources.mk opus_sources)
@@ -39,6 +45,8 @@ get_opus_sources(CELT_AM_SOURCES_ARM_ASM celt_sources.mk
 get_opus_sources(CELT_SOURCES_ARM_NEON_INTR celt_sources.mk
                  celt_sources_arm_neon_intr)
 get_opus_sources(CELT_SOURCES_ARM_NE10 celt_sources.mk celt_sources_arm_ne10)
+get_opus_sources(CELT_SOURCES_WASM_SIMD celt_sources.mk
+                 celt_sources_wasm_simd)
 
 get_opus_sources(DEEP_PLC_HEAD lpcnet_headers.mk deep_plc_headers)
 get_opus_sources(DRED_HEAD lpcnet_headers.mk dred_headers)

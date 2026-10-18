@@ -35,6 +35,10 @@
 #include "x86/celt_lpc_sse.h"
 #endif
 
+#if defined(OPUS_WASM_SIMD128)
+#include "wasm/celt_lpc_wasm.h"
+#endif
+
 #define CELT_LPC_ORDER 24
 
 void _celt_lpc(opus_val16 *_lpc, const opus_val32 *ac, int p);

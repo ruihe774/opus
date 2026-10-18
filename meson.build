@@ -385,6 +385,7 @@ have_sse4_1 = false
 have_avx2 = false
 have_neon_intr = false
 have_dotprod_intr = false
+have_wasm_simd128 = false
 
 intrinsics_support = []
 if not opt_intrinsics.disabled()
@@ -613,6 +614,32 @@ if not opt_intrinsics.disabled()
         warning('Get CPU Info method not detected, no rtcd for intrinsics')
       endif
     endif # opt_rtcd
+  elif host_cpu_family in ['wasm32', 'wasm64']
+    # WebAssembly has no run-time CPU detection: the SIMD kernels are used
+    # when the compiler targets fixed-width SIMD (e.g. -Dc_args=-msimd128),
+    # and their relaxed-SIMD variants when it also targets relaxed SIMD
+    # (e.g. -Dc_args=-mrelaxed-simd).
+    intrin_check = '''
+    #include <wasm_simd128.h>
+    #ifndef __wasm_simd128__
+    #error SIMD128 is not enabled
+    #endif
+      int main (void) {
+        v128_t x = wasm_i32x4_splat(1);
+        return wasm_i32x4_extract_lane(wasm_i32x4_add(x, x), 0);
+      }'''
+    intrin_name = 'WebAssembly SIMD128'
+    if cc.compiles(intrin_check,
+                   name: 'compiler targets @0@'.format(intrin_name))
+      have_wasm_simd128 = true
+      intrinsics_support += [intrin_name]
+      opus_conf.set('OPUS_WASM_SIMD128', 1)
+      if cc.get_define('__wasm_relaxed_simd__') != ''
+        intrinsics_support += ['WebAssembly relaxed SIMD']
+      endif
+    else
+      message('Compiler does not target @0@; pass -msimd128 or -mrelaxed-simd to enable it'.format(intrin_name))
+    endif
   else
     if opt_intrinsics.enabled()
       error('intrinsics option enabled, but no intrinsics support for ' + host_cpu_family)

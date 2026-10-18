@@ -98,6 +98,14 @@ silk/arm/LPC_inv_pred_gain_neon_intr.c \
 silk/arm/NSQ_del_dec_neon_intr.c \
 silk/arm/NSQ_neon.c
 
+SILK_SOURCES_WASM_SIMD = \
+silk/wasm/biquad_alt_wasm.c \
+silk/wasm/LPC_inv_pred_gain_wasm.c \
+silk/wasm/NSQ_wasm.c \
+silk/wasm/NSQ_del_dec_wasm.c \
+silk/wasm/VAD_wasm.c \
+silk/wasm/VQ_WMat_EC_wasm.c
+
 SILK_SOURCES_FIXED = \
 silk/fixed/LTP_analysis_filter_FIX.c \
 silk/fixed/LTP_scale_ctrl_FIX.c \
@@ -129,6 +137,11 @@ silk/fixed/x86/burg_modified_FIX_sse4_1.c
 
 SILK_SOURCES_FIXED_ARM_NEON_INTR = \
 silk/fixed/arm/warped_autocorrelation_FIX_neon_intr.c
+
+SILK_SOURCES_FIXED_WASM_SIMD = \
+silk/fixed/wasm/burg_modified_FIX_wasm.c \
+silk/fixed/wasm/vector_ops_FIX_wasm.c \
+silk/fixed/wasm/warped_autocorrelation_FIX_wasm.c
 
 SILK_SOURCES_FLOAT = \
 silk/float/apply_sine_window_FLP.c \
@@ -162,3 +175,6 @@ silk/float/sort_FLP.c
 
 SILK_SOURCES_FLOAT_AVX2 = \
 silk/float/x86/inner_product_FLP_avx2.c
+
+SILK_SOURCES_FLOAT_WASM_SIMD = \
+silk/float/wasm/inner_product_FLP_wasm.c

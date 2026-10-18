@@ -31,9 +31,13 @@ silk/arm/SigProc_FIX_armv4.h \
 silk/arm/SigProc_FIX_armv5e.h \
 silk/arm/NSQ_del_dec_arm.h \
 silk/arm/NSQ_neon.h \
+silk/wasm/main_wasm.h \
+silk/wasm/NSQ_wasm.h \
+silk/wasm/SigProc_FIX_wasm.h \
 silk/fixed/main_FIX.h \
 silk/fixed/structs_FIX.h \
 silk/fixed/arm/warped_autocorrelation_FIX_arm.h \
+silk/fixed/wasm/main_FIX_wasm.h \
 silk/fixed/mips/warped_autocorrelation_FIX_mipsr1.h \
 silk/float/main_FLP.h \
 silk/float/structs_FLP.h \

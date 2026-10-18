@@ -50,6 +50,10 @@
 # include "arm/pitch_arm.h"
 #endif
 
+#if defined(OPUS_WASM_SIMD128)
+#include "wasm/pitch_wasm.h"
+#endif
+
 void pitch_downsample(celt_sig * OPUS_RESTRICT x[], opus_val16 * OPUS_RESTRICT x_lp,
       int len, int C, int factor, int arch);
 

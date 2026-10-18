@@ -53,3 +53,9 @@ celt/arm/pitch_neon_intr.c
 CELT_SOURCES_ARM_NE10 = \
 celt/arm/celt_fft_ne10.c \
 celt/arm/celt_mdct_ne10.c
+
+CELT_SOURCES_WASM_SIMD = \
+celt/wasm/celt_lpc_wasm.c \
+celt/wasm/mathops_wasm.c \
+celt/wasm/pitch_wasm.c \
+celt/wasm/vq_wasm.c

@@ -106,6 +106,16 @@ static OPUS_INLINE opus_int32 float2int(float x) {return _mm_cvt_ss2si(_mm_set_s
                 return vcvtns_s32_f32(flt);
         }
 
+#elif defined(__wasm__) && defined(__wasm_nontrapping_fptoint__)
+
+        /* f32.nearest rounds half to even like lrintf(), and with the
+           non-trapping float-to-int extension the conversion saturates
+           instead of trapping, so this needs no libm call. */
+        static OPUS_INLINE opus_int32 float2int(float flt)
+        {
+                return (opus_int32)__builtin_rintf(flt);
+        }
+
 #elif defined(HAVE_LRINTF) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 
 /*      These defines enable functionality introduced with the 1999 ISO C
