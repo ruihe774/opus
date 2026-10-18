@@ -29,4 +29,52 @@
 
 #include "NSQ_wasm.h"
 
+void silk_VQ_WMat_EC_wasm(
+    opus_int8                   *ind,                           /* O    index of best codebook vector               */
+    opus_int32                  *res_nrg_Q15,                   /* O    best residual energy                        */
+    opus_int32                  *rate_dist_Q8,                  /* O    best total bitrate                          */
+    opus_int                    *gain_Q7,                       /* O    sum of absolute LTP coefficients            */
+    const opus_int32            *XX_Q17,                        /* I    correlation matrix                          */
+    const opus_int32            *xX_Q17,                        /* I    correlation vector                          */
+    const opus_int8             *cb_Q7,                         /* I    codebook                                    */
+    const opus_uint8            *cb_gain_Q7,                    /* I    codebook effective gain                     */
+    const opus_uint8            *cl_Q5,                         /* I    code length for each codebook vector        */
+    const opus_int              subfr_len,                      /* I    number of samples per subframe              */
+    const opus_int32            max_gain_Q7,                    /* I    maximum sum of absolute LTP coefficients    */
+    const opus_int              L                               /* I    number of vectors in codebook               */
+);
+
+#define OVERRIDE_silk_VQ_WMat_EC
+#define silk_VQ_WMat_EC(ind, res_nrg_Q15, rate_dist_Q8, gain_Q7, XX_Q17, xX_Q17, cb_Q7, cb_gain_Q7, cl_Q5, \
+                        subfr_len, max_gain_Q7, L, arch) \
+    ((void)(arch),silk_VQ_WMat_EC_wasm(ind, res_nrg_Q15, rate_dist_Q8, gain_Q7, XX_Q17, xX_Q17, cb_Q7, cb_gain_Q7, cl_Q5, \
+                       subfr_len, max_gain_Q7, L))
+
+/**************************/
+/* Noise level estimation */
+/**************************/
+void silk_VAD_GetNoiseLevels(
+    const opus_int32            pX[ VAD_N_BANDS ],  /* I    subband energies                            */
+    silk_VAD_state              *psSilk_VAD         /* I/O  Pointer to Silk VAD state                   */
+);
+
+opus_int silk_VAD_GetSA_Q8_wasm(
+    silk_encoder_state *psEnC,
+    const opus_int16   pIn[]
+);
+
+#define OVERRIDE_silk_VAD_GetSA_Q8
+#define silk_VAD_GetSA_Q8(psEnC, pIn, arch) ((void)(arch),silk_VAD_GetSA_Q8_wasm(psEnC, pIn))
+
+#ifndef FIXED_POINT
+double silk_inner_product_FLP_wasm(
+    const silk_float    *data1,
+    const silk_float    *data2,
+    opus_int            dataSize
+);
+
+#define OVERRIDE_inner_product_FLP
+#define silk_inner_product_FLP(data1, data2, dataSize, arch) ((void)(arch),silk_inner_product_FLP_wasm(data1, data2, dataSize))
+#endif
+
 #endif /* MAIN_WASM_H */

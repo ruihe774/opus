@@ -27,4 +27,19 @@
 #ifndef MAIN_FIX_WASM_H
 #define MAIN_FIX_WASM_H
 
+#ifdef FIXED_POINT
+void silk_warped_autocorrelation_FIX_wasm(
+          opus_int32                *corr,                                  /* O    Result [order + 1]                                                          */
+          opus_int                  *scale,                                 /* O    Scaling of the correlation vector                                           */
+    const opus_int16                *input,                                 /* I    Input data to correlate                                                     */
+    const opus_int                  warping_Q16,                            /* I    Warping coefficient                                                         */
+    const opus_int                  length,                                 /* I    Length of input                                                             */
+    const opus_int                  order                                   /* I    Correlation order (even)                                                    */
+);
+
+#define OVERRIDE_silk_warped_autocorrelation_FIX
+#define silk_warped_autocorrelation_FIX(corr, scale, input, warping_Q16, length, order, arch) \
+    ((void)(arch), silk_warped_autocorrelation_FIX_wasm(corr, scale, input, warping_Q16, length, order))
+#endif
+
 #endif /* MAIN_FIX_WASM_H */
