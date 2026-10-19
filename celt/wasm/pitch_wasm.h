@@ -83,8 +83,8 @@ void deemphasis_stereo_simple_wasm(celt_sig *in[], opus_res *pcm, int N,
     ((void)(arch), celt_deemphasis_wasm(y, x, coef, m, N))
 
 #define OVERRIDE_DEEMPHASIS_STEREO_SIMPLE
-#define deemphasis_stereo_simple(in, pcm, N, coef, mem, arch) \
-    ((void)(arch), deemphasis_stereo_simple_wasm(in, pcm, N, coef, mem))
+#define deemphasis_stereo_simple(in, pcm, N, coef, mem) \
+    deemphasis_stereo_simple_wasm(in, pcm, N, coef, mem)
 
 #endif /* !FIXED_POINT */
 
