@@ -1,3 +1,5 @@
+This fork contains WASM SIMD and relaxed SIMD kernels in addition to ISA-specific SIMD kernels.
+
 == Opus audio codec ==
 
 Opus is a codec for interactive speech and audio transmission over the Internet.
